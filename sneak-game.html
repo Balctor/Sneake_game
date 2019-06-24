@@ -1,0 +1,92 @@
+<body style="background-color: rgb(37, 218, 250)">
+    
+
+<h1 style="color: rgb(20, 24, 235);margin-top: 30px;font-family: 'Courier New', Courier, monospace;text-align: center; ">Um Jogo de Balctor M...</h1>
+<canvas id="canvas" width="400" height="400" style="display: block; margin: auto;margin-top: 100px">
+</canvas>
+
+<script>
+    window.onload = function(){
+        const canvas = document.getElementById('canvas');
+        contx = canvas.getContext('2d')
+
+        document.addEventListener('keydown', function(e){
+            console.log(e.keyCode)
+            switch(e.keyCode){
+                case 37:
+                    velX = -1;
+                    velY = 0;
+                    break;
+                case 38:
+                    velX = 0;
+                    velY = -1;
+                    break;
+                case 39:
+                    velX = 1;
+                    velY = 0;
+                    break;
+                case 40:
+                    velX = 0;
+                    velY = 1;
+                    break;
+            }
+        })
+
+        setInterval(jogo, 1000/5);
+    }
+
+    snake = [];
+    positionX = 10;
+    positionY = 10;
+    velX= 0;
+    velY= 0;
+    foodX = 13;
+    foodY = 18
+    grid = 20;
+    tam = 5
+
+    function jogo(){
+        positionX+=velX
+        positionY+=velY
+
+        if(positionX < 0 ){
+            positionX = grid;
+        }else if(positionX > grid){
+            positionX = 0;
+        }else if(positionY < 0){
+            positionY = grid;
+        }else if(positionY > grid){
+            positionY = 0;
+        }
+
+        contx.fillStyle = 'rgb(37, 101, 250)';
+        contx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        
+        
+        contx.fillStyle = 'black';
+        const img = document.getElementById('img')
+
+        for(var i = 0; i < snake.length; i++){
+            contx.fillRect(snake[i].x*grid, snake[i].y*grid, grid-1, grid-1)
+            if(snake[i].x == positionX && snake[i].y == positionY){
+            
+                    tam = 3
+            }
+        }
+
+        snake.push({x: positionX, y: positionY})
+
+        while(snake.length > tam){
+            snake.shift();
+        }
+        contx.fillStyle = 'yellow'
+        contx.fillRect(foodX*grid, foodY*grid, grid-1, grid-1)
+        if(positionX == foodX && positionY == foodY){
+            tam++;
+            foodX = Math.floor(Math.random()*grid)
+            foodY = Math.floor(Math.random()*grid)
+        }
+    }
+</script>
+</body>
